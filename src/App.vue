@@ -3,9 +3,9 @@
     <div class="todo-container">
       <div class="todo-wrap">
         <!-- 将方法传递给子组件，借此收到子组件传来的数据 -->
-        <TodoHeader :setNewTodo="setNewTodo"></TodoHeader>
+        <TodoHeader @setNewTodo="setNewTodo"></TodoHeader>
         <TodoList :todoList="todoList" :setTodoStatus="setTodoStatus" :delTodo="delTodo"></TodoList>
-        <TodoFooter :todoList="todoList" :setAllTodosDone="setAllTodosDone" :clearAllDone="clearAllDone"></TodoFooter>
+        <TodoFooter :todoList="todoList" @setAllTodosDone="setAllTodosDone" @clearAllDone="clearAllDone"></TodoFooter>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@ export default {
   components: {TodoHeader, TodoList, TodoFooter},
   data() {
     return {
-      todoList: []
+      todoList: JSON.parse(localStorage.getItem('todoList')) || []
     }
   },
   methods: {
@@ -45,6 +45,14 @@ export default {
     },
     clearAllDone() {
       this.todoList = this.todoList.filter(todo => !todo.isDone)
+    }
+  },
+  watch: {
+    todoList: {
+      deep: true,
+      handler(newTodoList) {
+        localStorage.setItem('todoList', JSON.stringify(newTodoList))
+      }
     }
   }
 }

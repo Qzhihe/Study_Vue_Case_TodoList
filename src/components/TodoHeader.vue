@@ -8,7 +8,6 @@
 import {nanoid} from 'nanoid'
 export default {
   name: 'TodoHearder',
-  props: ['setNewTodo'],
   data() {
     return {
       desc: ''
@@ -20,7 +19,7 @@ export default {
         return alert('待办事项不能为空')
       }
 
-      this.setNewTodo({id: nanoid(), desc: this.desc, isDone: false})
+      this.$emit('setNewTodo', {id: nanoid(), desc: this.desc, isDone: false})
       this.desc = ''
     }
   }
